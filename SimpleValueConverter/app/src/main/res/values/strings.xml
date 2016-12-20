@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Simple Value Converter</string>
+    <string name="msg__conversione_in_corso">Conversione valuta in corso&#8230;</string>
+    <string name="msg__download_valute">Download valute disponibili in corso&#8230;</string>
+</resources>
