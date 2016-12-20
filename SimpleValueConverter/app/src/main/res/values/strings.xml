@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Simple Value Converter</string>
-    <string name="msg__conversione_in_corso">Conversione valuta in corso&#8230;</string>
-    <string name="msg__download_valute">Download valute disponibili in corso&#8230;</string>
+
+    <string name="warning">Warning</string>
+    <string name="info">Info</string>
+    <string name="ok">Ok</string>
+
+    <string name="msg__loading">Loading&#8230;</string>
+    <string name="msg__conversione_in_corso">Currency conversion in progress&#8230;</string>
+    <string name="msg__download_valute">Download currencies in progress&#8230;</string>
+    <string name="hint__input_value_to_convert">Please input the value to convert&#8230;</string>
+
+    <string name="error__service_failed">Sorry, an error was occurred!</string>
+    <string name="error__no_result">Sorry, no currencies found!</string>
 </resources>

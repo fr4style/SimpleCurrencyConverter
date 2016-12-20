@@ -10,6 +10,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,7 +52,7 @@ public class WSCurrencyConverterHelper {
         Gson gson = new GsonBuilder().create();
         JsonObject root = rawResponse.getAsJsonObject("results");
         if(root != null){
-            Set<Map.Entry<String, JsonElement>> keyset = rawResponse.entrySet();
+            Set<Map.Entry<String, JsonElement>> keyset = root.entrySet();
             if(keyset != null) {
                 for (Map.Entry<String, JsonElement> entry : keyset) {
                     try { currencies.add(gson.fromJson(entry.getValue(), Currency.class));}
@@ -57,7 +60,10 @@ public class WSCurrencyConverterHelper {
                 }
             }
         }
+
+        Collections.sort(currencies);
         return currencies;
 
     }
+
 }

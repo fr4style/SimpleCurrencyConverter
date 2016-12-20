@@ -2,12 +2,17 @@ package com.fflorio.simplevalueconverter.network.models.responses;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This Class was created for SimpleValueConverter on 20/12/16
  * Designed and developed by Francesco Florio
  * All Right Reserved.
  */
-public class Currency {
+public class Currency implements Comparable<Currency> {
+    private final static Set<String> favorites = FavoriteCurrencyIds.getInstance();
 
     @SerializedName("id") public final String code;
     @SerializedName("currencyName") public final String name;
@@ -18,6 +23,8 @@ public class Currency {
         name = builder.name;
         symbol = builder.symbol;
     }
+
+    public boolean isFavorite(){ return favorites.contains(code); }
 
     public static final class Builder {
         private String code;
@@ -41,11 +48,17 @@ public class Currency {
         public Currency build() {return new Currency(this);}
     }
 
+    @Override public int compareTo(Currency o) {
+        if(o == null) return -1;
+        if(isFavorite() && !o.isFavorite()) return -1;
+        if(!isFavorite() && o.isFavorite()) return 1;
+        if (name == null && o.name == null) return 0;
+        if (name == null) return 1;
+        if (o.name == null) return -1;
+        return name.compareTo(o.name);
+    }
+
     @Override public String toString() {
-        return "Currency{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", symbol='" + symbol + '\'' +
-                '}';
+        return String.format("%s (%s)", name, code);
     }
 }

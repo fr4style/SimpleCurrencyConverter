@@ -1,18 +1,14 @@
 package com.fflorio.simplevalueconverter.activities;
 
-import android.util.Log;
-
 import com.fflorio.simplevalueconverter.R;
 import com.fflorio.simplevalueconverter.network.WSCurrencyConverter;
 import com.fflorio.simplevalueconverter.network.models.requests.ConvertCurrencyParams;
 import com.fflorio.simplevalueconverter.network.models.responses.ConvertCurrencyResponse;
-import com.fflorio.simplevalueconverter.network.models.responses.Currency;
 import com.fflorio.simplevalueconverter.network.models.responses.CurrencyList;
 import com.fflorio.simplevalueconverter.ui.Presenter;
 import com.fflorio.simplevalueconverter.ui.ShowProgressDialogHelper;
 import com.fflorio.simplevalueconverter.utils.MLog;
 
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -33,7 +29,7 @@ public class MainActivityPresenter extends Presenter{
     MainActivityPresenter(MainActivity activity){
         this.activity = activity;
         wsCurrencyConverter = WSCurrencyConverter.create();
-        showProgressDialogHelper = new ShowProgressDialogHelper(activity, 0);
+        showProgressDialogHelper = new ShowProgressDialogHelper(activity, R.string.msg__conversione_in_corso);
     }
 
     public void convertCurrency(ConvertCurrencyParams params){
@@ -50,11 +46,9 @@ public class MainActivityPresenter extends Presenter{
                     }
                     @Override public void onNext(ConvertCurrencyResponse convertCurrencyResponse) {
                         showProgressDialogHelper.hideDialog();
-                        MLog.d("Il valore "+convertCurrencyResponse.originalRequest.valueToConvert+
-                                     " "+convertCurrencyResponse.originalRequest.currencyFrom+
-                                     " corrisponde a "+convertCurrencyResponse.convertedValue+
-                                     " "+convertCurrencyResponse.originalRequest.currencyTo);
-                    }
+                        activity.updateAfterConversion(convertCurrencyResponse.originalRequest.currencyTo,
+                                                       convertCurrencyResponse.convertedValue);
+                       }
                 }));
     }
 
@@ -68,11 +62,13 @@ public class MainActivityPresenter extends Presenter{
                             @Override public void onCompleted() {}
                             @Override public void onError(Throwable e) {
                                 MLog.e(e);
+                                activity.showWarningDialog(R.string.error__service_failed);
                                 showProgressDialogHelper.hideDialog();
                             }
                             @Override public void onNext(CurrencyList currencyList) {
                                 showProgressDialogHelper.hideDialog();
-                                for(Currency c : currencyList){ MLog.d(c);}
+                                if(currencyList == null || currencyList.isEmpty()){activity.showWarningDialog(R.string.error__no_result);}
+                                else{ activity.updateAdapterWith(currencyList); }
                             }
                         }));
     }
