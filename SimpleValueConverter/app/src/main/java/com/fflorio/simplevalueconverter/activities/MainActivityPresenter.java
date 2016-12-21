@@ -1,5 +1,7 @@
 package com.fflorio.simplevalueconverter.activities;
 
+import android.os.Bundle;
+
 import com.fflorio.simplevalueconverter.R;
 import com.fflorio.simplevalueconverter.network.WSCurrencyConverter;
 import com.fflorio.simplevalueconverter.network.models.requests.ConvertCurrencyParams;
@@ -21,10 +23,17 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainActivityPresenter extends Presenter{
 
+    private final String FROM_CURRENCY = "FROM_CURRENCY";
+    private final String TO_CURRENCY = "TO_CURRENCY";
+
     CompositeSubscription compositeSubscriptions = new CompositeSubscription();
     ShowProgressDialogHelper showProgressDialogHelper;
     MainActivity activity;
     WSCurrencyConverter wsCurrencyConverter;
+
+    private String defaultFromValue = "CAD";
+    private String defaultToValue = "EUR";
+
 
     MainActivityPresenter(MainActivity activity){
         this.activity = activity;
@@ -72,6 +81,23 @@ public class MainActivityPresenter extends Presenter{
                             }
                         }));
     }
+
+    public void restoreDefaultValueFrom(Bundle savedBundle){
+        if(savedBundle != null) {
+            if(savedBundle.containsKey(FROM_CURRENCY)) { this.defaultFromValue = savedBundle.getString(FROM_CURRENCY); }
+            if(savedBundle.containsKey(TO_CURRENCY)) { this.defaultToValue = savedBundle.getString(TO_CURRENCY); }
+        }
+    }
+
+    public Bundle saveCurrentValuesInBundle(String fromValue, String toValue){
+        Bundle bundle = new Bundle();
+        bundle.putString(FROM_CURRENCY, fromValue);
+        bundle.putString(TO_CURRENCY, toValue);
+        return bundle;
+    }
+
+    public String getDefaultFromValue() { return defaultFromValue; }
+    public String getDefaultToValue() { return defaultToValue; }
 
     @Override public void unbind() {
         compositeSubscriptions.unsubscribe();

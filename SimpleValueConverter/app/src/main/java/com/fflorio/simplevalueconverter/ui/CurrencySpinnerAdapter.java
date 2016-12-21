@@ -1,6 +1,7 @@
 package com.fflorio.simplevalueconverter.ui;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fflorio.simplevalueconverter.R;
+import com.fflorio.simplevalueconverter.network.models.responses.Currency;
 import com.fflorio.simplevalueconverter.network.models.responses.CurrencyList;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +25,7 @@ import butterknife.ButterKnife;
  */
 public class CurrencySpinnerAdapter extends BaseAdapter{
     private CurrencyList dataset = new CurrencyList();
+    private Map<String, Integer> positionsIndex = new HashMap<>();
 
     @Override public int getCount() { return dataset.size(); }
     @Override public Object getItem(int position) { return dataset.get(position); }
@@ -41,8 +47,26 @@ public class CurrencySpinnerAdapter extends BaseAdapter{
         return view;
     }
     public void updateList(CurrencyList newDataset){
-        this.dataset = newDataset;
+        dataset.clear();
+        positionsIndex.clear();
+        int i=0;
+        for(Currency c : newDataset){
+            dataset.add(c);
+            positionsIndex.put(c.code, i++);
+        }
         notifyDataSetChanged();
+    }
+
+    public int getPositionByCode(String code){
+        Integer position = positionsIndex.get(code);
+        return position != null ? position : -1;
+    }
+    @Nullable public Currency getCurrencyByCode(String code){
+        int position = getPositionByCode(code);
+        if(position >=0 && position < dataset.size()){
+            return dataset.get(position);
+        }
+        return null;
     }
 
     static class ViewHolder {

@@ -36,6 +36,7 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
         setContentView(R.layout.activity__main);
         ButterKnife.bind(this);
         presenter = new MainActivityPresenter(this);
+        presenter.restoreDefaultValueFrom(savedInstanceState);
         valueToConvert.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
@@ -59,7 +60,6 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
         presenter.getCurrencyList();
     }
 
-
     private void convertValue(){
         String valueRaw = valueToConvert.getText().toString();
         double value = 0;
@@ -80,6 +80,7 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
     void updateAdapterWith(CurrencyList currencyList){
         ((CurrencySpinnerAdapter)currencyFromSpinner.getAdapter()).updateList(currencyList) ;
         ((CurrencySpinnerAdapter)currencyToSpinner.getAdapter()).updateList(currencyList) ;
+        presetValues();
     }
 
     void updateAfterConversion(String outputCurrency, double convertedValue){
@@ -96,6 +97,16 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
         currencyToSpinner.setSelection(fromIndex, true);
     }
 
+    private void presetValues(){
+        String fromCode = presenter.getDefaultFromValue();
+        String toCode = presenter.getDefaultToValue();
+        int fromIndex = ((CurrencySpinnerAdapter)currencyFromSpinner.getAdapter()).getPositionByCode(fromCode);
+        int toIndex = ((CurrencySpinnerAdapter)currencyToSpinner.getAdapter()).getPositionByCode(toCode);
+
+        if(fromIndex >0){currencyFromSpinner.setSelection(fromIndex, true); }
+        if(toIndex >0){currencyToSpinner.setSelection(toIndex, true); }
+    }
+
     @Override public void onNothingSelected(AdapterView<?> parent) { }
     @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(!valueToConvert.getText().toString().isEmpty()){
@@ -106,5 +117,11 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
     @Override protected void onDestroy() {
         presenter.unbind();
         super.onDestroy();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        outState.putAll(presenter.saveCurrentValuesInBundle(((Currency)currencyFromSpinner.getSelectedItem()).code,
+                                                            ((Currency)currencyToSpinner.getSelectedItem()).code));
+        super.onSaveInstanceState(outState);
     }
 }
