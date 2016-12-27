@@ -7,3 +7,6 @@ Special thanks to http://free.currencyconverterapi.com to provide the free API u
 
 If you don't want to build the code, you can download and try the App directly from: 
 https://dl.dropboxusercontent.com/u/4193235/converter_demo_v1.0beta.apk
+
+![image](https://github.com/fr4style/converter/blob/master/SimpleValueConverter/convert_screenshot.png?raw=true)
+
