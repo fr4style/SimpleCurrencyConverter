@@ -26,6 +26,7 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
     @BindView(R.id.SpinnerCurrencyFrom) Spinner currencyFromSpinner;
     @BindView(R.id.SpinnerCurrencyTo) Spinner currencyToSpinner;
     @BindView(R.id.reverseBtn) View reverseButton;
+    @BindView(R.id.convertBtn) View convertButton;
     @BindView(R.id.valueToConvert) EditText valueToConvert;
     @BindView(R.id.resultTxt) TextView resultTxt;
 
@@ -52,7 +53,12 @@ public class MainActivity extends AbstractActivity implements Spinner.OnItemSele
                 invertCurrencies();
             }
         });
-
+        convertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                convertValue();
+            }
+        });
         currencyFromSpinner.setAdapter(new CurrencySpinnerAdapter());
         currencyToSpinner.setAdapter(new CurrencySpinnerAdapter());
         currencyFromSpinner.setOnItemSelectedListener(this);
