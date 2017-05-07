@@ -12,4 +12,6 @@
 
     <string name="error__service_failed">Sorry, an error was occurred!</string>
     <string name="error__no_result">Sorry, no currencies found!</string>
+    <string name="error__invalid_value">The value is invalid!</string>
+
 </resources>

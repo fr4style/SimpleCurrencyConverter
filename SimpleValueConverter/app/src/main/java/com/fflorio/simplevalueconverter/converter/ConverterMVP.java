@@ -24,12 +24,14 @@ public interface ConverterMVP {
         void showConversion(final String currency, final double value);
 
         void updateCurrencyLists(final CurrencyList currencyList);
+
+        void updateSpinners(final String fromValue, final String toValue);
     }
 
     interface Model {
 
         interface CurrencyListCallback {
-            void onCurrencyListReady(final CurrencyList currencyList);
+            void onCurrencyListReady(final CurrencyList currencyList, String fromCurrencyCode, String toCurrencyCode);
 
             void onCurrencyListError(Throwable throwable);
         }
@@ -40,15 +42,14 @@ public interface ConverterMVP {
             void onConvertCurrencyError(Throwable throwable);
         }
 
-        interface DefaultValuesCallback {
-            void onDefaultLoaded(final String fromCurrencyCode, final String toCurrencyCode);
-        }
-
         void convertCurrency(final ConvertCurrencyParams params, Model.ConvertCurrencyCallback callback);
 
         void getCurrencyList(final Model.CurrencyListCallback callback);
 
-        void loadDefaultValues(final DefaultValuesCallback callback);
+        void restoreSavedState(final String fromValue, final String toValue);
+
+        void release();
+
     }
 
     interface ViewPresenter {
@@ -56,13 +57,14 @@ public interface ConverterMVP {
 
         void convertValue(ConvertCurrencyParams convertCurrencyParams);
 
-        void saveCurrentValueIntoBundle(final String fromCurrencyCode, final String toCurrencyCode);
+        Bundle saveCurrentValueIntoBundle(final String fromCurrencyCode, final String toCurrencyCode);
 
-        void restoreDefaultValue(final Bundle savedBundle);
+        void restoreDefaultValues(final Bundle savedBundle);
+
+        void unbind();
     }
 
-    interface ModelPresenter extends Model.CurrencyListCallback, Model.ConvertCurrencyCallback,
-            Model.DefaultValuesCallback {
+    interface ModelPresenter extends Model.CurrencyListCallback, Model.ConvertCurrencyCallback {
     }
 
 
