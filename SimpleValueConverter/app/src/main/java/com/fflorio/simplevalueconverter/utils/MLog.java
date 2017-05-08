@@ -11,21 +11,29 @@ import com.fflorio.simplevalueconverter.BuildConfig;
  */
 public class MLog {
 
-    public static final void w(Object object){
-        if(BuildConfig.DEBUG){ Log.w(Vars.TAG, object.toString()); }
+    public static final void w(Object object) {
+        if (BuildConfig.DEBUG) {
+            Log.w(Vars.TAG, object.toString());
+        }
     }
 
-    public static final void d(Object object){
-        if(BuildConfig.DEBUG){ Log.d(Vars.TAG, object.toString()); }
+    public static final void d(Object object) {
+        if (BuildConfig.DEBUG) {
+            Log.d(Vars.TAG, object.toString());
+        }
     }
 
-    public static final void e(Throwable tr){
-        if(BuildConfig.DEBUG){ Log.e(Vars.TAG, "Errore:", tr); }
+    public static final void e(Throwable tr) {
+        if (BuildConfig.DEBUG) {
+            Log.e(Vars.TAG, "Errore:", tr);
+        }
     }
 
 
-    public static final void e(Object object, Throwable tr){
-        if(BuildConfig.DEBUG){ Log.e(Vars.TAG, object.toString(), tr); }
+    public static final void e(Object object, Throwable tr) {
+        if (BuildConfig.DEBUG) {
+            Log.e(Vars.TAG, object.toString(), tr);
+        }
     }
 
 }

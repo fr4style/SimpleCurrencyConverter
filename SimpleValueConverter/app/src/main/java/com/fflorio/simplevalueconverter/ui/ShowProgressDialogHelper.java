@@ -17,7 +17,7 @@ public class ShowProgressDialogHelper {
     private String label;
     private ProgressDialog progressDialog;
 
-    public ShowProgressDialogHelper(Activity activity){
+    public ShowProgressDialogHelper(Activity activity) {
         this.activity = activity;
         this.label = activity.getString(R.string.msg__loading);
     }

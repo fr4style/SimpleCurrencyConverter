@@ -23,20 +23,40 @@ import butterknife.ButterKnife;
  * Designed and developed by Francesco Florio
  * All Right Reserved.
  */
-public class CurrencySpinnerAdapter extends BaseAdapter{
+public class CurrencySpinnerAdapter extends BaseAdapter {
     private CurrencyList dataset = new CurrencyList();
     private Map<String, Integer> positionsIndex = new HashMap<>();
 
-    @Override public int getCount() { return dataset.size(); }
-    @Override public Object getItem(int position) { return dataset.get(position); }
-    @Override public long getItemId(int position) { return position; }
-    @Override public View getView(int position, View convertView, ViewGroup parent) { return getCustomView(position, convertView, parent, false); }
-    @Override public View getDropDownView(int position, View convertView, ViewGroup parent) { return getCustomView(position, convertView, parent, true); }
+    @Override
+    public int getCount() {
+        return dataset.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return dataset.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return getCustomView(position, convertView, parent, false);
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getCustomView(position, convertView, parent, true);
+    }
 
     private View getCustomView(int position, View view, ViewGroup parent, boolean isDropDown) {
         ViewHolder holder;
-        if (view != null) { holder = (ViewHolder) view.getTag(); }
-        else {
+        if (view != null) {
+            holder = (ViewHolder) view.getTag();
+        } else {
             @LayoutRes int layoutId = isDropDown ? R.layout.adapter__textview_for_dropdown : R.layout.adapter__textview_for_spinner;
             view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
             holder = new ViewHolder(view);
@@ -46,31 +66,35 @@ public class CurrencySpinnerAdapter extends BaseAdapter{
         holder.label.setText(dataset.get(position).toString());
         return view;
     }
-    public void updateList(CurrencyList newDataset){
+
+    public void updateList(CurrencyList newDataset) {
         dataset.clear();
         positionsIndex.clear();
-        int i=0;
-        for(Currency c : newDataset){
+        int i = 0;
+        for (Currency c : newDataset) {
             dataset.add(c);
             positionsIndex.put(c.code, i++);
         }
         notifyDataSetChanged();
     }
 
-    public int getPositionByCode(String code){
+    public int getPositionByCode(String code) {
         Integer position = positionsIndex.get(code);
         return position != null ? position : -1;
     }
-    @Nullable public Currency getCurrencyByCode(String code){
+
+    @Nullable
+    public Currency getCurrencyByCode(String code) {
         int position = getPositionByCode(code);
-        if(position >=0 && position < dataset.size()){
+        if (position >= 0 && position < dataset.size()) {
             return dataset.get(position);
         }
         return null;
     }
 
     static class ViewHolder {
-        @BindView(R.id.label) TextView label;
+        @BindView(R.id.label)
+        TextView label;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -71,8 +71,6 @@ public class ConverterActivty extends AbstractActivity implements ConverterMVP.V
         valueToConvert.setOnEditorActionListener(new OnActionPressedListener());
         currencyFromSpinner.setAdapter(new CurrencySpinnerAdapter());
         currencyToSpinner.setAdapter(new CurrencySpinnerAdapter());
-        currencyFromSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
-        currencyToSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
         presenter.restoreDefaultValues(savedInstanceState);
         presenter.getCurrencyList();
     }
@@ -103,6 +101,8 @@ public class ConverterActivty extends AbstractActivity implements ConverterMVP.V
     public void updateCurrencyLists(CurrencyList currencyList) {
         ((CurrencySpinnerAdapter) currencyFromSpinner.getAdapter()).updateList(currencyList);
         ((CurrencySpinnerAdapter) currencyToSpinner.getAdapter()).updateList(currencyList);
+        currencyFromSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
+        currencyToSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
     }
 
     @Override
