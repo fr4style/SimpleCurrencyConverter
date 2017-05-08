@@ -40,6 +40,7 @@ captures/
 
 # Keystore files
 *.jks
+keystore*
 
 # OS-specific files
 .DS_Store
